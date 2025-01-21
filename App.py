@@ -34,7 +34,11 @@ if audio_data is not None:
             detected_text = recognizer.recognize_google(audio_content, language="zh-CN")
             st.success(f"Texto detectado: {detected_text}")
 
-            # Traducir el texto detectado
+            # Traducir el texto  # Detectar el idioma
+            detected = translator.detect(detected_text)
+            print(f"Texto: {detected_text}")
+            print(f"Idioma detectado: {detected.lang}")
+            print(f"Confianza: {detected.confidence}")
             
 
 # Detectar el idioma
