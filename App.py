@@ -26,6 +26,7 @@ if audio_data is not None:
     try:
         st.info("Procesando el audio...")
 
+        
         # Cargar el archivo temporal con SpeechRecognition
         with sr.AudioFile(temp_audio_path) as source:
             audio_content = recognizer.record(source)  # Leer todo el contenido del audio
