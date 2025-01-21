@@ -1,0 +1,10 @@
+streamlit
+transformers
+torch
+sentencepiece
+ffmpeg-python
+whisper
+coqui-tts
+pyaudio
+numpy
+soundfile
