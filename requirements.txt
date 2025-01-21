@@ -6,3 +6,4 @@ sentencepiece
 whisper
 ffmpeg-python
 coqui-tts
+googletrans
