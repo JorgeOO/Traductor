@@ -41,13 +41,6 @@ if audio_data is not None:
             print(f"Confianza: {detected.confidence}")
             
 
-# Detectar el idioma
-detected = translator.detect(detected_text)
-print(f"Texto: {detected_text}")
-print(f"Idioma detectado: {detected.lang}")
-print(f"Confianza: {detected.confidence}")
-            
-
 #translation = translator.translate(detected_text, src="zh-cn", dest="es")
             st.success(f"Traducción: {translation.text}")
     except Exception as e:
