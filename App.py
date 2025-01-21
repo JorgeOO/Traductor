@@ -1,34 +1,40 @@
 import streamlit as st
 from googletrans import Translator
+import speech_recognition as sr
 
 # Configuración de la página
-st.set_page_config(page_title="Traductor Chino/Inglés a Español", layout="centered")
+st.set_page_config(page_title="Traductor con Entrada de Audio", layout="centered")
 
 # Título de la aplicación
-st.title("Traductor Chino/Inglés a Español")
+st.title("Traductor de Audio a Español")
 
-# Inicializar el traductor
+# Inicializar herramientas
 translator = Translator()
+recognizer = sr.Recognizer()
 
-# Selección del idioma de origen
-source_language = st.selectbox("Selecciona el idioma de origen", ["Chino", "Inglés"])
-source_lang_code = "zh-cn" if source_language == "Chino" else "en"
+# Widget para grabar audio
+st.markdown("### Graba un mensaje de voz")
+audio_data = st.audio_input("Graba un mensaje para traducir:")
 
-# Caja de texto para ingresar el texto a traducir
-text_to_translate = st.text_area("Ingresa el texto que deseas traducir:")
+if audio_data is not None:
+    # Procesar el audio grabado
+    try:
+        st.info("Procesando el audio...")
 
-# Botón para traducir
-if st.button("Traducir"):
-    if text_to_translate.strip():
-        try:
-            # Realizar la traducción
-            translation = translator.translate(text_to_translate, src=source_lang_code, dest="es")
+        # Convertir el audio grabado en formato WAV a texto
+        with sr.AudioFile(audio_data) as source:
+            audio_content = recognizer.record(source)
+            detected_text = recognizer.recognize_google(audio_content, language="zh-CN")
+            st.success(f"Texto detectado: {detected_text}")
+
+            # Traducir el texto
+            translation = translator.translate(detected_text, src="zh-cn", dest="es")
             st.success(f"Traducción: {translation.text}")
-        except Exception as e:
-            st.error(f"Error al traducir: {e}")
-    else:
-        st.warning("Por favor, ingresa un texto para traducir.")
+    except Exception as e:
+        st.error(f"Error al procesar el audio: {e}")
+else:
+    st.warning("Por favor, graba un mensaje de voz para traducir.")
 
-# Información del pie de página
+# Información adicional
 st.markdown("---")
-st.markdown("Aplicación de traducción creada con 💙 utilizando [Streamlit](https://streamlit.io/) y [Googletrans](https://pypi.org/project/googletrans/).")
+st.markdown("Aplicación creada con 💙 utilizando [Streamlit](https://streamlit.io/), [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) y [Googletrans](https://pypi.org/project/googletrans/).")
