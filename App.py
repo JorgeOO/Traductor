@@ -23,6 +23,7 @@ def translate_text(text, src_lang, tgt_lang):
     return tokenizer.decode(translated[0], skip_special_tokens=True)
 
 # Interfaz de usuario
+
 st.title("Traductor en Tiempo Real (Inglés/Chino a Español)")
 
 src_lang = st.selectbox("Idioma de origen", ["en (Inglés)", "zh (Chino)"])
