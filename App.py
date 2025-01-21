@@ -1,6 +1,5 @@
 import streamlit as st
-import sounddevice as sd
-import numpy as np
+import speech_recognition as sr
 import whisper
 from transformers import MarianMTModel, MarianTokenizer
 from TTS.api import TTS
@@ -24,16 +23,16 @@ def translate_text(text, src_lang, tgt_lang):
     translated = model.generate(**inputs)
     return tokenizer.decode(translated[0], skip_special_tokens=True)
 
-# Configuración de grabación
-DURATION = 5  # Duración de la grabación en segundos
-SAMPLE_RATE = 16000  # Frecuencia de muestreo en Hz
-
-# Captura de audio con Sounddevice
-def record_audio(duration, sample_rate):
-    st.info("Grabando... Habla ahora.")
-    audio = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype="int16")
-    sd.wait()  # Esperar a que termine la grabación
-    return audio
+# Captura de audio con SpeechRecognition
+def record_audio_with_recognition():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        st.info("Escuchando... Habla ahora.")
+        audio = recognizer.listen(source, timeout=5, phrase_time_limit=5)
+        st.success("Audio capturado.")
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio_file:
+            temp_audio_file.write(audio.get_wav_data())
+            return temp_audio_file.name
 
 # Interfaz de usuario
 st.title("Traductor en Tiempo Real (Inglés/Chino a Español)")
@@ -44,13 +43,8 @@ tgt_lang_code = "es"
 
 if st.button("Iniciar Grabación y Traducción"):
     # Grabación de audio
-    audio_data = record_audio(DURATION, SAMPLE_RATE)
+    temp_audio_path = record_audio_with_recognition()
     
-    # Guardar el audio temporalmente
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio_file:
-        temp_audio_file.write(audio_data.tobytes())
-        temp_audio_path = temp_audio_file.name
-
     # Transcribir audio
     st.write("Procesando transcripción...")
     transcription = whisper_model.transcribe(temp_audio_path, language=src_lang_code)
