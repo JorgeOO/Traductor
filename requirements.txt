@@ -1,10 +1,8 @@
 streamlit
+speechrecognition
 transformers
 torch
 sentencepiece
-ffmpeg-python
 whisper
+ffmpeg-python
 coqui-tts
-numpy
-soundfile
-sounddevice
