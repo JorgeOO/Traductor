@@ -7,3 +7,4 @@ whisper
 coqui-tts
 numpy
 soundfile
+sounddevice
