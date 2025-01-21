@@ -18,7 +18,6 @@ st.markdown("### Graba un mensaje de voz")
 audio_data = st.audio_input("Graba un mensaje para traducir:")
 
 if audio_data is not None:
-    
     # Crear un archivo temporal para almacenar el audio grabado
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
         temp_audio_file.write(audio_data.getbuffer())
