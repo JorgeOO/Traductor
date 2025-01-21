@@ -35,7 +35,7 @@ if audio_data is not None:
             st.success(f"Texto detectado: {detected_text}")
 
             # Traducir el texto  # Detectar el idioma
-            detected = translator.detect(detected_text)
+            detected = Translator.detect(detected_text)
             print(f"Texto: {detected_text}")
             print(f"Idioma detectado: {detected.lang}")
             print(f"Confianza: {detected.confidence}")
